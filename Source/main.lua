@@ -7,12 +7,12 @@ local gfx <const> = pd.graphics
 --variables for the state the game is in
 local gameState = {
 	title = "title",
-	menu = "menu",
+	help = "help",
 	drawing = "drawing"
 }
 local currentGameState = gameState.title
 
---variables for pencil
+--variables for drawing screen
 local positionX, positionY = 200, 120
 local pencilRadiusOptions = {2.5, 5, 10}
 local currentPencilRadius = pencilRadiusOptions[1]
@@ -21,22 +21,52 @@ local drawingStopped = false
 
 --variables for start screen
 local startScreenTitle = "Etch-A-Sketch Playdate Edition"
-local startScreenSubtext = "Press A to start drawing!"
+local startScreenHeader1 = "Press A to start drawing!"
+local startScreenHeader2 = "Press B to view controls."
 local creditsText = "Program by Nicholas Aguirre"
+
+--variables for controls screen
+local controlsHeaderText = "Controls"
+local drawControlText = "Crank: Adjust direction of pencil"
+local pencilSizeText = "Right: Change Pencil Size"
+local stopDrawingText = "B: Pause/Resume drawing"
+local clearScreenText = "A: Clear Screen"
+local titleNavText = "Press B to go back to the Title Screen"
 
 function pd.update()
 	if currentGameState == gameState.title then
 		gfx.clear()
 
-		gfx.drawText(startScreenTitle, 80, 60)
-		gfx.drawText(startScreenSubtext, 100, 100)
+		gfx.drawText(startScreenTitle, 80, 40)
+		gfx.drawText(startScreenHeader1, 100, 100)
+		gfx.drawText(startScreenHeader2, 100, 120)
+
 		gfx.drawText(creditsText, 90, 215)
 
 		if pd.buttonJustPressed("a") then
 			gfx.clear()
 			currentGameState = gameState.drawing
+		elseif pd.buttonJustPressed("b") then
+			gfx.clear()
+			currentGameState = gameState.help
 		end
+	elseif currentGameState == gameState.help then
+		gfx.clear()
 
+		gfx.drawText(controlsHeaderText, 60, 20)
+		gfx.drawText("-----------", 60, 35)
+
+		gfx.drawText(drawControlText, 100, 80)
+		gfx.drawText(pencilSizeText, 100, 100)
+		gfx.drawText(stopDrawingText, 100, 120)
+		gfx.drawText(clearScreenText, 100, 140)
+
+		gfx.drawText(titleNavText, 60, 215)
+
+		if pd.buttonJustPressed("b") then
+			gfx.clear()
+			currentGameState = gameState.title
+		end
 	elseif currentGameState == gameState.drawing then
 		local crankAngle = math.rad(pd.getCrankPosition())
 
