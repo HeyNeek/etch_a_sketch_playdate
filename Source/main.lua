@@ -120,13 +120,13 @@ function pd.update()
 		--letting user draw out of bounds
 		if isCollidingWithScreenEdge ~= nil then
 			if isCollidingWithScreenEdge == "left" then
-				positionX = 0
+				positionX = math.max(0, positionX)
 			elseif isCollidingWithScreenEdge == "right" then
-				positionX = 400
+				positionX = math.min(400, positionX)
 			elseif isCollidingWithScreenEdge == "top" then
-				positionY = 0
+				positionY = math.max(0, positionY)
 			elseif isCollidingWithScreenEdge == "bottom" then
-				positionY = 240
+				positionY = math.min(240, positionY)
 			end
 		end
 
