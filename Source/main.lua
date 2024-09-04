@@ -3,6 +3,9 @@ import "CoreLibs/graphics"
 --playdate SDK variables
 local pd <const> = playdate
 local gfx <const> = pd.graphics
+local screenWidth = pd.display.getWidth()
+local screenHeight = pd.display.getHeight()
+
 --variables for the state the game is in
 local gameState = {
 	title = "title",
@@ -30,6 +33,20 @@ local pencilSizeText = "Right: Change Pencil Size"
 local drawText = "Up: Draw"
 local clearScreenText = "A: Clear Screen"
 local titleNavText = "Press B to go back to the Title Screen"
+
+function checkCollisionWithScreenEdges(x, y, width, height)
+    if x < 0 then
+        return "left"
+    elseif x + width > screenWidth then
+        return "right"
+    elseif y < 0 then
+        return "top"
+    elseif y + height > screenHeight then
+        return "bottom"
+    else
+        return nil
+    end
+end
 
 function pd.update()
 	if currentGameState == gameState.title then
@@ -67,6 +84,7 @@ function pd.update()
 		end
 	elseif currentGameState == gameState.drawing then
 		local crankAngle = math.rad(pd.getCrankPosition())
+		local isCollidingWithScreenEdge = checkCollisionWithScreenEdges(positionX, positionY, currentPencilRadius, currentPencilRadius)
 
 		--if statement to check for a input, if pressed it will clear screen and reset penicil positionX and positionY
 		if pd.buttonJustPressed("a") then
@@ -96,6 +114,20 @@ function pd.update()
 		if pd.buttonIsPressed("up") then
 			positionX += math.sin(crankAngle) * drawSpeed
 			positionY -= math.cos(crankAngle) * drawSpeed
+		end
+
+		--if statement checking for screen edge collision and not
+		--letting user draw out of bounds
+		if isCollidingWithScreenEdge ~= nil then
+			if isCollidingWithScreenEdge == "left" then
+				positionX = 0
+			elseif isCollidingWithScreenEdge == "right" then
+				positionX = 400
+			elseif isCollidingWithScreenEdge == "top" then
+				positionY = 0
+			elseif isCollidingWithScreenEdge == "bottom" then
+				positionY = 240
+			end
 		end
 
 		gfx.fillCircleAtPoint(positionX, positionY, currentPencilRadius)
