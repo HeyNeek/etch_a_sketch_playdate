@@ -3,7 +3,6 @@ import "CoreLibs/graphics"
 --playdate SDK variables
 local pd <const> = playdate
 local gfx <const> = pd.graphics
-
 --variables for the state the game is in
 local gameState = {
 	title = "title",
@@ -17,7 +16,6 @@ local positionX, positionY = 200, 120
 local pencilRadiusOptions = {2.5, 5, 10}
 local currentPencilRadius = pencilRadiusOptions[1]
 local drawSpeed = 1.25
-local drawingStopped = false
 
 --variables for start screen
 local startScreenTitle = "Etch-A-Sketch Playdate Edition"
@@ -92,18 +90,10 @@ function pd.update()
 		end
 
 		--[[
-		if statement checking if player hits the b button, and based on the state of drawingStopped, 
-		it will reassign the drawingStopped value to the opposite of that
-		]]
-		if pd.buttonJustPressed("b") then
-			drawingStopped = not drawingStopped
-		end
-
-		--[[
-		if statement checking if the drawingStopped value is false, and if so it will draw a line in the current direction
+		if the user is holding up on the dPad, it will draw a line in the current direction
 		of the crankAngle times the drawSpeed
 		]]
-		if drawingStopped == false then
+		if pd.buttonIsPressed("up") then
 			positionX += math.sin(crankAngle) * drawSpeed
 			positionY -= math.cos(crankAngle) * drawSpeed
 		end
