@@ -27,7 +27,7 @@ local creditsText = "Program by Nicholas Aguirre"
 local controlsHeaderText = "Controls"
 local drawControlText = "Crank: Adjust direction of pencil"
 local pencilSizeText = "Right: Change Pencil Size"
-local stopDrawingText = "B: Pause/Resume drawing"
+local drawText = "Up: Draw"
 local clearScreenText = "A: Clear Screen"
 local titleNavText = "Press B to go back to the Title Screen"
 
@@ -56,7 +56,7 @@ function pd.update()
 
 		gfx.drawText(drawControlText, 100, 80)
 		gfx.drawText(pencilSizeText, 100, 100)
-		gfx.drawText(stopDrawingText, 100, 120)
+		gfx.drawText(drawText, 100, 120)
 		gfx.drawText(clearScreenText, 100, 140)
 
 		gfx.drawText(titleNavText, 60, 215)
